@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from datetime import datetime
 
 
@@ -7,7 +8,7 @@ from django.db import models
 class CityDict(models.Model):
     name = models.CharField(max_length=20, verbose_name="城市")
     desc = models.CharField(max_length=200, verbose_name="描述")
-    add_time = models.DateTimeField(default=datetime.now)
+    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
         verbose_name = "城市"
