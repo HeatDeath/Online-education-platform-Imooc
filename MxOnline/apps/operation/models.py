@@ -35,7 +35,7 @@ class UserFavorite(models.Model):
     user = models.ForeignKey(UserProfile, verbose_name='用户')
     # ID 是课程的 ID 或者是 讲师、课程机构的 ID
     fav_id = models.IntegerField(default=0, verbose_name='收藏数据 Id')
-    fav_type = models.IntegerField(choices=( (1, '课程'), (2, '课程机构'), (3, '讲师') ), default=1, verbose_name='收藏类型')
+    fav_type = models.IntegerField(choices=((1, '课程'), (2, '课程机构'), (3, '讲师')), default=1, verbose_name='收藏类型')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     class Meta:

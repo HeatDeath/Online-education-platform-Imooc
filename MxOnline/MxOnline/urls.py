@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.conf import settings
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
@@ -6,7 +7,11 @@ from django.views.static import serve #处理静态文件
 
 import xadmin
 
+
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetView, ResetView, ModifyPwdView
+from organization.views import OrgView
+from MxOnline.settings import MEDIA_ROOT
+
 
 urlpatterns = [
     url(r'^admin/', xadmin.site.urls),
@@ -23,5 +28,16 @@ urlpatterns = [
 
     # 重置密码表单 POST 请求
     url(r'^modify_pwd/$', ModifyPwdView.as_view(), name='modify_pwd'),
+
+    # 课程机构 url 配置
+    url(r'^org/', include('organization.urls', namespace='org')),
+
+
+    # 配置上传文件的访问处理函数
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+
+    # 课程相关 url 配置
+    # url(r'^course/', include('courses.urls', namespace='course')),
+
 ]
 
