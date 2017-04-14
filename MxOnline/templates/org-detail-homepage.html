@@ -11,11 +11,11 @@
         <div class="brief group_list">
             {% for course in all_courses %}
                 <div class="module1_5 box">
-                    <a href="course-detail.html">
+                    <a href="course-detail-1.html">
                         <img width="214" src="{{ MEDIA_URL }}{{ course.image }}"/>
                     </a>
                     <div class="des">
-                        <a href="course-detail.html"><h2>{{ course.name }}</h2></a>
+                        <a href="course-detail-1.html"><h2>{{ course.name }}</h2></a>
                         <span class="fl">课时：<i class="key">{{ course.learn_times }}</i></span>
                         <span class="fr">参加人数：{{ course.students }}</span>
                     </div>
