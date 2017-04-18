@@ -72,11 +72,11 @@
 						<p>世界名校，课程权威</p>
 					</div>
 					<div class="pic">
-                        <a href="/company/14/">
+                        <a href="{% url 'org:org_home' course.course_org.id %}">
                             <img width="150" height="80" src="{{ MEDIA_URL }}{{ course.course_org.image }}"/>
                         </a>
                     </div>
-					<a href="/company/14/">
+					<a href="{% url 'org:org_home' course.course_org.id %}">
                         <h2 class="center" title="{{ course.course_org.name }}">{{ course.course_org.name }}</h2>
                     </a>
 					<div class="btn  notlogin

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
+from django.db.models import Q
 import json
 
 
@@ -15,6 +16,13 @@ class CourseListView(View):
     def get(self, request):
         all_courses = Course.objects.all().order_by("-add_time")
         hot_courses = Course.objects.all().order_by("-click_nums")[:3]
+
+        # 课程搜索
+        serach_keywords = request.GET.get('keywords', "")
+        if serach_keywords:
+            all_courses = all_courses.filter(Q(name__icontains=serach_keywords) | Q(desc__icontains=serach_keywords) | Q(detail__icontains=serach_keywords))
+
+        # 课程排序
         sort = request.GET.get('sort', "")
         if sort:
             if sort == "students":

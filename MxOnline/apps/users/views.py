@@ -4,11 +4,14 @@ from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
+from django.http import HttpResponse
+import json
 
 
 from .models import UserProfile, EmailVerifyRecord
-from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm
+from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UploadImageForm
 from utils.email_send import send_register_email
+from utils.mixin_utils import LoginRequiredMixin
 
 
 class CustomBackend(ModelBackend):
@@ -133,8 +136,45 @@ class ModifyPwdView(View):
         return render(request, 'password_reset.html', {'email': email, 'modify_form': modify_form})
 
 
+# 用户个人信息
+class UserInfoView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'usercenter-info.html', {
+
+        })
 
 
+#  用户修改头像
+class UploadImageView(LoginRequiredMixin, View):
+    def post(self, request):
+        image_form = UploadImageForm(request.POST, request.FILES, instance=request.user)
+        res = dict()
+        if image_form.is_valid():
+            image_form.save()
+            res['status'] = 'success'
+            # image = image_form.cleaned_data['image']
+            # request.user.image = image
+            # request.user.save()
+            # pass
+        else:
+            res['status'] = 'fail'
+        return HttpResponse(json.dumps(res), content_type='application/json')
+
+
+# 在个人中心修改密码
+class ModifyPwdView(View):
+    def post(self, request):
+        modify_form = ModifyPwdForm(request.POST)
+        if modify_form.is_valid():
+            pwd1 = request.POST.get('password1', '')
+            pwd2 = request.POST.get('password2', '')
+            if pwd1 != pwd2:
+                return render(request, 'password_reset.html', {'email': email, 'msg': '密码不一致！'})
+            user = request.user
+            user.password = make_password(pwd2)
+            user.save()
+            return render(request, 'login.html')
+        return render(request, 'password_reset.html', {'email': email, 'modify_form': modify_form})
 
 
 
