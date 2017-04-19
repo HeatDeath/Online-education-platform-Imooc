@@ -1,12 +1,12 @@
 {% extends 'usercenter_base.html' %}
 {% block title %}个人信息-暮雪在线网{% endblock %}
-
+{% load staticfiles %}
 {% block custom_bread %}
     <section>
         <div class="wp">
             <ul  class="crumbs">
                 <li><a href="{% url 'index' %}">首页</a>></li>
-                <li><a href="/user/home/">个人中心</a>></li>
+                <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
                 <li>个人信息</li>
             </ul>
         </div>
@@ -67,7 +67,7 @@
 							<input type="button" id="jsEditUserBtn" value="保存">
 						</li>
 					</ul>
-                    <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+                    {% csrf_token %}
 				</form>
 			</div>
 		</div>

@@ -109,11 +109,11 @@
 	<div class="wp list personal_list">
 	<div class="left">
         <ul>
-            <li class="active2"><a href="usercenter-info.html">个人资料</a></li>
-            <li ><a href="usercenter-mycourse.html">我的课程</a></li>
-            <li ><a href="usercenter-fav-course.html">我的收藏</a></li>
+            <li class="active2"><a href="{% url 'users:user_info' %}">个人资料</a></li>
+            <li ><a href="{% url 'users:mycourse' %}">我的课程</a></li>
+            <li ><a href="{% url 'users:myfav_org' %}">我的收藏</a></li>
             <li >
-                <a href="usercenter-message.html" style="position: relative;">
+                <a href="{% url 'users:mymessage' %}" style="position: relative;">
                     我的消息
                 </a>
             </li>
@@ -186,7 +186,7 @@
     </div>
     <div class="dialogbox changeemai1 changephone" id="jsChangeEmailDialog">
         <h1>修改邮箱</h1>
-        <div class="close jsCloseDialog"><img src="../images/dig_close.png"/></div>
+        <div class="close jsCloseDialog"><img src="{% static 'images/dig_close.png' %}"/></div>
         <p>请输入新的邮箱地址</p>
         <form id="jsChangeEmailForm" autocomplete="off">
             <div class="box">
@@ -200,8 +200,7 @@
             <div class="button">
                 <input class="changeemai_btn" id="jsChangeEmailBtn" type="button" value="完成"/>
             </div>
-            <input type='hidden' name='csrfmiddlewaretoken' value='DaP7IUKm9FA9nELA9YUlYYWpyIDdCiIP' />
-        <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+            {% csrf_token %}
         </form>
     </div>
 
@@ -298,7 +297,7 @@
                 data: {
                     fav_type: 1,
                     fav_id: favid,
-                    csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
                 async: true,
                 success: function(data) {
@@ -317,7 +316,7 @@
                     data: {
                         fav_type: 3,
                         fav_id: favid,
-                        csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     async: true,
                     success: function(data) {
@@ -325,7 +324,6 @@
                     }
                 });
         });
-
 
     $('.jsDeleteFav_org').on('click', function(){
             var _this = $(this),
@@ -337,7 +335,7 @@
                     data: {
                         fav_type: 2,
                         fav_id: favid,
-                        csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     async: true,
                     success: function(data) {
@@ -405,7 +403,7 @@
                 "bdSize":"16"
             }
         };
-    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com../api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
 </script>
 
 </body>

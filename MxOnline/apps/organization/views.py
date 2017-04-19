@@ -189,17 +189,14 @@ class AddFavView(View):
     #         teacher = Teacher.objects.get(id=fav_id)
     #         teacher.fav_nums += num
     #         teacher.save()
-
     def post(self, request):
         fav_id = int(request.POST.get('fav_id', 0))
         fav_type = int(request.POST.get('fav_type', 0))
-
         res = dict()
         if not request.user.is_authenticated():
             res['status'] = 'fail'
             res['msg'] = '用户未登录'
             return HttpResponse(json.dumps(res), content_type='application/json')
-
         # 查询收藏记录
         exist_records = UserFavorite.objects.filter(user=request.user, fav_id=fav_id, fav_type=fav_type)
         if exist_records:
@@ -215,7 +212,6 @@ class AddFavView(View):
                 user_fav.fav_type = fav_type
                 user_fav.save()
                 # self.set_fav_nums(fav_type, fav_id, 1)
-
                 res['status'] = 'success'
                 res['msg'] = '已收藏'
             else:

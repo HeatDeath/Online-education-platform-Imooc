@@ -75,6 +75,7 @@ var verify = verifyDialogSubmit(
     });
 }
 
+
 $(function(){
     //个人资料修改密码
     $('#jsUserResetPwd').on('click', function(){

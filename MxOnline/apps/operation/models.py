@@ -60,6 +60,9 @@ class UserMessage(models.Model):
         verbose_name = '用户消息'
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return self.message
+
 
 # CourseComments 和 UserCourse 字段差不多，可以使用 UserCourse 继承 CourseComments
 class UserCourse(models.Model):
