@@ -162,19 +162,20 @@ class UploadImageView(LoginRequiredMixin, View):
 
 
 # 在个人中心修改密码
-class ModifyPwdView(View):
+class UpdataPwdView(View):
     def post(self, request):
         modify_form = ModifyPwdForm(request.POST)
         if modify_form.is_valid():
             pwd1 = request.POST.get('password1', '')
             pwd2 = request.POST.get('password2', '')
             if pwd1 != pwd2:
-                return render(request, 'password_reset.html', {'email': email, 'msg': '密码不一致！'})
+                return HttpResponse('{"status": "fail", "msg": "密码不一致"}', content_type='application/json')
             user = request.user
             user.password = make_password(pwd2)
             user.save()
-            return render(request, 'login.html')
-        return render(request, 'password_reset.html', {'email': email, 'modify_form': modify_form})
+            return HttpResponse('{"status": "success"}', content_type='application/json')
+        else:
+            return HttpResponse(json.dumps(modify_form.errors), content_type='application/json')
 
 
 
