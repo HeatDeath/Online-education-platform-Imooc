@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 from datetime import datetime
+# from DjangoUeditor.models import UEditorField
+
 
 from django.db import models
 from organization.models import CourseOrg, Teacher
@@ -10,6 +12,12 @@ class Course(models.Model):
     name = models.CharField(max_length=50, verbose_name="课程名称")
     desc = models.CharField(max_length=300, verbose_name="课程描述")
     detail = models.TextField(verbose_name="课程详情")
+
+    # Python 3 中无法使用 Ueditor
+    # detail = UEditorField(verbose_name="课程详情", width=600, height=300, imagePath="course/ueditor/",
+    #                         filePath="course/ueditor/", default="")
+
+    is_banner = models.BooleanField(default=False, verbose_name="是否轮播")
     degree = models.CharField(verbose_name="课程难度", choices=(("cj", "初级"), ("zj", "中级"), ("gj", "高级")), max_length=2)
     learn_times = models.IntegerField(default=0, verbose_name="学习时长(分钟数)")
     teacher = models.ForeignKey(Teacher, verbose_name="讲师", null=True, blank=True)
@@ -30,6 +38,14 @@ class Course(models.Model):
     # 获取课程章节数
     def get_zj_nums(self):
         return self.lesson_set.all().count()
+    # 修改后台列名的显示，否则该列显示为 get_zj_nums
+    get_zj_nums.short_description = "章节数"
+
+
+    # def go_to(self):
+    #     from django.utils.safestring import mark_safe
+    #     return mark_safe("<a href='http://www.baidu.com'>跳转</a>")
+    # go_to.short_description = "跳转"
 
     def get_learn_users(self):
         return self.usercourse_set.all()[:5]
@@ -40,6 +56,14 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# 只是为了在 admin 中注册不同的数据，不要再生成一张新表，但具有 model 的功能
+class BannerCourse(Course):
+    class Meta:
+        verbose_name = "轮播课程"
+        verbose_name_plural = verbose_name
+        proxy = True
 
 
 class Lesson(models.Model):

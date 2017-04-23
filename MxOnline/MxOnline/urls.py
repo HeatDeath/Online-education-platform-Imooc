@@ -8,16 +8,21 @@ from django.views.static import serve #处理静态文件
 import xadmin
 
 
-from users.views import LoginView, RegisterView, ActiveUserView, ForgetView, ResetView, ModifyPwdView
+from users.views import LoginView, RegisterView, ActiveUserView, \
+                        ForgetView, ResetView, ModifyPwdView, LogoutView, IndexView
 from organization.views import OrgView
 from MxOnline.settings import MEDIA_ROOT
+# from MxOnline.settings import STATIC_ROOT
 
 
 urlpatterns = [
     url(r'^admin/', xadmin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name="index.html"), name="index"),
+    url(r'^$', IndexView.as_view(), name="index"),
     # url(r'^login/$', TemplateView.as_view(template_name="login.html"), name="login"),
     url(r'^login/$', LoginView.as_view(), name="login"),
+
+    url(r'^logout/$', LogoutView.as_view(), name="logout"),
+
     url(r'^register/$', RegisterView.as_view(), name="register"),
     url(r'^captcha/', include('captcha.urls')),
     # 验证用户注册后，在邮件里点击注册链接
@@ -36,6 +41,8 @@ urlpatterns = [
     # 配置上传文件的访问处理函数
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 
+    # url(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}),
+
     # 课程相关 url 配置
     url(r'^course/', include('courses.urls', namespace='course')),
 
@@ -45,5 +52,13 @@ urlpatterns = [
     # 用户相关 url 配置
     url(r'^users/', include('users.urls', namespace='users')),
 
+    # # 富文本相关 Url
+    # url(r'^ueditor/',include('DjangoUeditor.urls'))
+
 ]
+
+# 全局 404 页面配置
+handler404 = 'users.views.page_not_found'
+handler500 = 'users.views.page_error'
+
 

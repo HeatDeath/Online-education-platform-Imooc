@@ -11,9 +11,12 @@ class CityDictAdmin(object):
 
 
 class CourseOrgAdmin(object):
-    list_display = ['name', 'desc', 'click_nums', 'fav_nums']
+    list_display = ['name', 'desc', 'click_nums', 'fav_nums', 'get_course_nums']
     search_fields = ['name', 'desc', 'click_nums', 'fav_nums']
     list_filter = ['name', 'desc', 'click_nums', 'fav_nums']
+
+    # 只有在搜索的时候，才会加载出来， 在数据量过大的时候，不会一次性加载出来
+    relfield_style = 'fk-ajax'
 
 
 class TeacherAdmin(object):

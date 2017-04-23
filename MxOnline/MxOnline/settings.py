@@ -21,7 +21,9 @@ SECRET_KEY = 's81lk8rsu_5%hzqlh=$aa$tldf=v+7zhvu0r_inqm_82rqhs^w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    # '*',
+]
 
 AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'captcha',
     'pure_pagination',
+    # 'DjangoUeditor',
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"
@@ -147,5 +150,8 @@ EMAIL_FROM = "mydjangotest@sina.com"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 
