@@ -45,7 +45,6 @@ class CourseOrg(models.Model):
         return self.course_set.all().count()
     get_course_nums.short_description = "课程数"
 
-
     def __str__(self):
         return self.name
 
