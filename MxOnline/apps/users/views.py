@@ -20,6 +20,7 @@ from courses.models import Course
 from .models import Banner
 
 
+# 继承 django.contrib.auth.backends 的 ModelBackend，并重写，实现使用可以同时使用 用户名 或者 邮箱 登录的功能
 class CustomBackend(ModelBackend):
     def authenticate(self, username=None, password=None, **kwargs):
         try:
@@ -127,7 +128,6 @@ class LogoutView(View):
         return HttpResponseRedirect(reverse("index"))
 
 
-
 # 用户进入到重置密码页面
 class ResetView(View):
     def get(self, request, active_code):
@@ -159,7 +159,10 @@ class ModifyPwdView(View):
 # 用户个人信息
 class UserInfoView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'usercenter-info.html', {})
+        current_page = 'user_info'
+        return render(request, 'usercenter-info.html', {
+            'current_page': current_page,
+        })
 
     def post(self, request):
         user_info_form = UserInfoForm(request.POST, instance=request.user)
@@ -168,9 +171,6 @@ class UserInfoView(LoginRequiredMixin, View):
             return HttpResponse('{"status":"success"}', content_type='application/json')
         else:
             return HttpResponse(json.dumps(user_info_form.errors), content_type='application/json')
-
-
-
 
 
 # 用户修改头像
@@ -218,7 +218,7 @@ class SendEmailCodeView(LoginRequiredMixin, View):
             return HttpResponse(json.dumps(res), content_type='application/json')
         send_register_email(email, 'update_email')
         res['status'] = 'success'
-        res['msg'] = '发送验证码成功'
+        res['email'] = '发送验证码成功'
         return HttpResponse(json.dumps(res), content_type='application/json')
 
 
@@ -242,8 +242,10 @@ class UpdateEmailView(LoginRequiredMixin, View):
 class MycourseView(LoginRequiredMixin, View):
     def get(self, request):
         user_courses = UserCourse.objects.filter(user=request.user)
+        current_page = 'mycourse'
         return render(request, 'usercenter-mycourse.html', {
             "user_courses": user_courses,
+            'current_page': current_page,
         })
 
 
@@ -251,6 +253,7 @@ class MycourseView(LoginRequiredMixin, View):
 class MyFavOrgView(LoginRequiredMixin, View):
     def get(self, request):
         org_list = []
+        current_page = 'myfav_org'
         fav_orgs = UserFavorite.objects.filter(user=request.user, fav_type=2)
         for fav_org in fav_orgs:
             org_id = fav_org.fav_id
@@ -259,6 +262,7 @@ class MyFavOrgView(LoginRequiredMixin, View):
 
         return render(request, 'usercenter-fav-org.html', {
             "org_list": org_list,
+            'current_page': current_page,
         })
 
 
@@ -266,6 +270,7 @@ class MyFavOrgView(LoginRequiredMixin, View):
 class MyFavTeacherView(LoginRequiredMixin, View):
     def get(self, request):
         teacher_list = []
+        current_page = 'myfav_org'
         fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)
         for fav_teacher in fav_teachers:
             teacher_id = fav_teacher.fav_id
@@ -274,12 +279,15 @@ class MyFavTeacherView(LoginRequiredMixin, View):
 
         return render(request, 'usercenter-fav-teacher.html', {
             "teacher_list": teacher_list,
+            'current_page': current_page,
         })
+
 
 # 我收藏的课程
 class MyFavCourseView(LoginRequiredMixin, View):
     def get(self, request):
         course_list = []
+        current_page = 'myfav_org'
         fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
         for fav_course in fav_courses:
             course_id = fav_course.fav_id
@@ -288,12 +296,14 @@ class MyFavCourseView(LoginRequiredMixin, View):
 
         return render(request, 'usercenter-fav-course.html', {
             "course_list": course_list,
+            'current_page': current_page,
         })
 
 
 # 我的消息
 class MyMessageView(LoginRequiredMixin, View):
     def get(self, request):
+        current_page = 'mymessage'
         all_message = UserMessage.objects.filter(user=request.user.id)
 
         # 用户进入个人消息后，清空未读消息的记录
@@ -314,6 +324,7 @@ class MyMessageView(LoginRequiredMixin, View):
 
         return render(request, 'usercenter-message.html', {
             "messages": messages,
+            'current_page': current_page,
         })
 
 

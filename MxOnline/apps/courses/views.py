@@ -94,6 +94,7 @@ class CourseInfoView(LoginRequiredMixin, View):
 
         user_courses = UserCourse.objects.filter(course=course)
         user_ids = [user_course.user.id for user_course in user_courses]
+
         all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)
         # 取出所有课程 id
         course_ids = [user_course.course.id for user_course in all_user_courses]

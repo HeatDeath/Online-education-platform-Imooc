@@ -109,10 +109,10 @@
 	<div class="wp list personal_list">
 	<div class="left">
         <ul>
-            <li class="active2"><a href="{% url 'users:user_info' %}">个人资料</a></li>
-            <li ><a href="{% url 'users:mycourse' %}">我的课程</a></li>
-            <li ><a href="{% url 'users:myfav_org' %}">我的收藏</a></li>
-            <li >
+            <li class="{% ifequal current_page 'user_info' %}active2{% endifequal %}"><a href="{% url 'users:user_info' %}">个人资料</a></li>
+            <li class="{% ifequal current_page 'mycourse' %}active2{% endifequal %}"><a href="{% url 'users:mycourse' %}">我的课程</a></li>
+            <li class="{% ifequal current_page 'myfav_org' %}active2{% endifequal %}"><a href="{% url 'users:myfav_org' %}">我的收藏</a></li>
+            <li class="{% ifequal current_page 'mymessage' %}active2{% endifequal %}">
                 <a href="{% url 'users:mymessage' %}" style="position: relative;">
                     我的消息
                 </a>

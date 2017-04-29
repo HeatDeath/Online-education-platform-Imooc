@@ -114,7 +114,7 @@ class OrgHomeView(View):
         })
 
 
-# 机构课程列表页
+# 机构介绍页
 class OrgDescView(View):
     def get(self, request, org_id):
         course_org = CourseOrg.objects.get(id=int(org_id))
@@ -133,7 +133,7 @@ class OrgDescView(View):
         })
 
 
-# 机构介绍页
+# 机构课程页
 class OrgCourseView(View):
     def get(self, request, org_id):
         course_org = CourseOrg.objects.get(id=int(org_id))
@@ -150,7 +150,6 @@ class OrgCourseView(View):
             'course_org': course_org,
             'current_page': current_page,
             'has_fav': has_fav,
-
         })
 
 
@@ -310,7 +309,6 @@ class TeacherDetailView(View):
 
         # 讲师排行
         sorted_teacher = Teacher.objects.all().order_by("-click_nums")[:3]
-
 
         return render(request, "teacher-detail.html", {
             'teacher': teacher,
